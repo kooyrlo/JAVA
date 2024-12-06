@@ -1,0 +1,100 @@
+//for문 (1부터 10까지 출력)
+package sec02.exam01;
+
+public class ForPrintFrom1To10Example {
+	public static void main(String[] args) {
+		for(int i=1; i<=10; i++) {
+			System.out.println(i);
+		}
+	}
+}
+
+//for문 (1부터 100까지 합을 출력)
+package sec02.exam02;
+
+public class ForSumFrom1To100Example1 {
+	public static void main(String[] args) {
+		int sum = 0; 
+		
+		for(int i=1; i<=100; i++) {
+			sum += i;
+		}
+		
+		System.out.println("1~100 합 : " + sum);
+	}
+}
+
+//중첩 for문 (구구단 출력하기)
+package sec02.exam05;
+
+public class ForMultiplicationTableExample {
+	public static void main(String[] args) {
+		for (int m=2; m<=9; m++) {
+			System.out.println("*** " + m + "단 ***");
+			for (int n=1; n<=9; n++) {
+				System.out.println(m + " x " + n + " = " + (m*n));
+			}
+		}
+	}
+}
+
+//while문 (1부터 10까지 출력)
+package sec02.exam06;
+
+public class WhilePrintFrom1To10Example {
+	public static void main(String[] args) {
+		int i = 1;
+		while (i<=10) {
+			System.out.println(i);
+			i++;
+		}
+	}
+}
+
+//while문 (1부터 100까지 합을 출력)
+package sec02.exam07;
+
+public class WhileSumForm1To100Example {
+	public static void main(String[] args) {
+		int sum = 0;
+    
+		int i = 1;
+		
+		while(i<=100) {
+			sum += i;
+			i++;
+		}
+		
+		System.out.println("1~" + (i-1) + " 합 : " + sum);
+	}
+}
+
+//break로 while문 종료
+package sec02.exam08;
+
+public class  BreakExample {
+	public static void main(String[] args) throws Exception {
+		while(true) {
+			int num = (int)(Math.random()*6) + 1;
+			System.out.println(num);
+			if(num == 6) {
+				break;
+			}
+		}
+		System.out.println("프로그램 종료");
+	}
+}
+
+//continue를 이용한 for문
+package sec02.exam10;
+
+public class  ContinueExample {
+	public static void main(String[] args) throws Exception {
+		for(int i=1; i<=10; i++) {
+			if(i%2 != 0) {
+				continue;
+			}
+			System.out.println(i);
+		}
+	}
+}
