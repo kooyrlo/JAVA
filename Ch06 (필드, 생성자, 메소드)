@@ -1,0 +1,245 @@
+//Car 클래스 필드 선언
+package sec02.exam01;
+
+public class Car {
+	//필드
+	String company = "현대자동차";
+	String model = "그랜저";
+	String color = "검정";
+	int maxSpeed = 350;
+	int speed;
+}
+
+//외부 클래스에서 Car 필드값 읽기와 변경
+package sec02.exam01;
+
+public class CarExample {
+	public static void main(String[] args) {
+		//객체 생성
+		Car myCar = new Car();
+		
+		//필드 값 읽기
+		System.out.println("제작회사: " + myCar.company);
+		System.out.println("모델명: " + myCar.model);
+		System.out.println("색깔: " + myCar.color);
+		System.out.println("최고속도: " + myCar.maxSpeed);
+		System.out.println("현재속도: " + myCar.speed);
+		
+		//필드 값 변경
+		myCar.speed = 60;
+		System.out.println("수정된 속도: " + myCar.speed);
+	}
+}
+
+//생성자 선언
+package sec03.exam01;
+
+public class Car {
+	//생성자
+	Car(String color, int cc) {
+	}
+}
+
+//생성자를 호출해서 객체 생성
+package sec03.exam01;
+
+public class CarExample {
+	public static void main(String[] args) {
+		Car myCar = new Car("검정", 3000);
+		//Car myCar = new Car();  (x) <——— 기본 생서자를 호출할 수 없음
+	}
+}
+
+//생성자의 오버로딩
+package sec03.exam03;
+
+public class Car {
+	//필드
+	String company = "현대자동차";
+	String model;
+	String color;
+	int maxSpeed;
+	
+	//생성자
+	Car() {
+	}
+	
+	Car(String model) {
+		this.model = model;
+	}
+	
+	Car(String model, String color) {
+		this.model = model;
+		this.color = color;
+	}
+	
+	Car(String model, String color, int maxSpeed) {
+		this.model = model;
+		this.color = color;
+		this.maxSpeed = maxSpeed;
+	}
+}
+
+//다른 생성자를 호출(this() 코드)해서 중복 코드 줄이기
+package sec03.exam04;
+
+public class Car {
+  //필드
+  String company = "현대자동차";
+	String model;
+	String color;
+	int maxSpeed;
+	
+	//생성자
+	Car() {
+	}
+
+  Car(String model) {
+    this(model, "은색", 250);
+  }
+
+ Car(String model, String color) {
+    this(model, color, 250);
+ }
+
+ Car(String model, String color, int maxSpeed) {
+    this.model = model;
+		this.color = color;
+		this.maxSpeed = maxSpeed;
+	}
+}
+
+//메소드 선언
+package sec04.exam01;
+
+public class Calculator {
+	//메소드
+	void powerOn() {
+		System.out.println("전원을 켭니다.");
+	}
+	
+	int plus(int x, int y) {
+		int result = x + y;
+		return result;
+	}
+	
+	double divide(int x, int y) {
+		double result = (double)x / (double)y;
+		return result;
+	}
+	
+	void powerOff() {
+		System.out.println("전원을 끕니다");
+	}
+}
+
+//메소드 호출
+package sec04.exam01;
+
+public class CalculatorExample {
+	public static void main(String[] args) {
+		Calculator myCalc = new Calculator();
+		myCalc.powerOn();
+		
+		int result1 = myCalc.plus(5, 6);
+		System.out.println("result1: " + result1);
+		
+		byte x = 10;
+		byte y = 4;
+		double result2 = myCalc.divide(x, y);
+		System.out.println("result2: " + result2);
+		
+		myCalc.powerOff();
+	}
+}
+
+//return문
+package sec04.exam03;
+
+public class Car {
+	//필드
+	int gas;
+	
+	//생성자 생략 (기본 생성자)
+	
+	//메소드
+	void setGas(int gas) {
+		this.gas = gas;
+	}
+	
+	boolean isLeftGas() {
+		if(gas==0) {
+			System.out.println("gas가 없습니다."); 
+			return false;
+		}
+		System.out.println("gas가 있습니다."); 
+		return true;
+	}
+	
+	void run() {
+		while(true) {
+			if(gas > 0) {
+				System.out.println("달립니다.(gas잔량:" + gas + ")");
+				gas -= 1;
+			} else {
+				System.out.println("멈춥니다.(gas잔량:" + gas + ")");
+				return;
+			}
+		}
+	}
+}
+
+package sec04.exam03;
+
+public class CarExample {
+	public static void main(String[] args) {
+		Car myCar = new Car();
+		
+		myCar.setGas(5);  //Car의 setGas() 메소드 호출
+		
+		boolean gasState = myCar.isLeftGas();  //Car의 isLeftGas() 메소드 호출
+		if(gasState) {
+			System.out.println("출발합니다.");
+			myCar.run();  //Car의 run() 메소드 호출
+		}
+		
+		if(myCar.isLeftGas()) {  //Car의 isLeftGas() 메소드 호출
+			System.out.println("gas를 주입할 필요가 없습니다.");
+		} else {
+			System.out.println("gas를 주입하세요.");
+		}
+	}
+}
+
+//메소드 오버로딩
+package sec04.exam06;
+
+public class Calculator {
+//정사각형의 넓이
+  double areaRectang(double width) {
+    return width * width;
+  }
+
+//직사각형의 넓이
+  double areaRectang(double width, double height) {
+      return width * height;
+  }
+}
+
+package sec04.exam06;
+
+public class CalculatorExample {
+  public static void main(String[] args) {
+    Calculator myCalcu = new Calculator();
+    
+    //정사각형의 넓이 구하기
+    double result1 = myCalcu.areaRectangle(10);
+
+    //직사각형의 넓이 구하기
+    double result2 = myCalcu.areaRectangle(10, 20);
+
+    //결과 출력
+    System.out.println("정사각형 넓이=" + result1);
+    System.out.println("직사각형 넓이=" + result2);
+  }
+}
