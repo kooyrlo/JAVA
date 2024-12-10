@@ -1,0 +1,300 @@
+//부모 클래스
+package sec01.exam01;
+
+public class CellPhone {
+	//필드
+	String model;
+	String color;
+	
+	//생성자
+	
+	//메소드
+	void powerOn() { System.out.println("전원을 켭니다."); }	
+	void powerOff() { System.out.println("전원을 끕니다."); }
+	void bell() { System.out.println("벨이 울립니다."); }	
+	void sendVoice(String message) { System.out.println("자기: " + message); }	
+	void receiveVoice(String message) { System.out.println("상대방: " + message); }	
+	void hangUp() { System.out.println("전화를 끊습니다."); }
+}
+
+//자식 클래스
+package sec01.exam01;
+
+public class DmbCellPhone extends CellPhone {
+	//필드
+	int channel;
+	
+	//생성자
+	DmbCellPhone(String model, String color, int channel) {
+		this.model = model;
+		this.color = color;
+		this.channel = channel;
+	}
+
+	//메소드
+	void turnOnDmb() {
+		System.out.println("채널 " + channel + "번 DMB 방송 수신을 시작합니다.");
+	}	
+	void changeChannelDmb(int channel) {
+		this.channel = channel;
+		System.out.println("채널 " + channel + "번으로 바꿉니다.");
+	}
+	void turnOffDmb() {
+		System.out.println("DMB 방송 수신을 멈춥니다.");
+	}	
+}
+
+//자식 클래스 사용
+package sec01.exam01;
+
+public class DmbCellPhoneExample {
+	public static void main(String[] args) {
+		//DmbCellPhone 객체 생성
+		DmbCellPhone dmbCellPhone = new DmbCellPhone("자바폰", "검정", 10);
+		
+		//CellPhone으로부터 상속 받은 필드
+		System.out.println("모델: " + dmbCellPhone.model);
+		System.out.println("색상: " + dmbCellPhone.color);
+		
+		//DmbCellPhone의 필드
+		System.out.println("채널: " + dmbCellPhone.channel);
+		
+		//CellPhone으로부터 상속 받은 메소드 호출
+		dmbCellPhone.powerOn();
+		dmbCellPhone.bell();
+		dmbCellPhone.sendVoice("여보세요");
+		dmbCellPhone.receiveVoice("안녕하세요! 저는 홍길동인데요");
+		dmbCellPhone.sendVoice("아~ 예 반갑습니다.");
+		dmbCellPhone.hangUp();
+
+		//DmbCellPhone의 메소드 호출
+		dmbCellPhone.turnOnDmb();
+		dmbCellPhone.changeChannelDmb(12);
+		dmbCellPhone.turnOffDmb();
+	}
+}
+
+//부모 클래스
+package sec01.exam02;
+
+public class People {
+	public String name;
+	public String ssn;
+	
+	public People(String name, String ssn) {
+		this.name = name;
+		this.ssn = ssn;
+	}
+}
+
+//자식 클래스
+package sec01.exam02;
+
+public class Student extends People{
+	public int studentNo;
+	
+	public Student(String name, String ssn, int studentNo) {
+		super(name, ssn);
+		this.studentNo = studentNo;
+	}
+}
+
+//자식 객체 이용
+package sec01.exam02;
+
+public class StudentExample {
+	public static void main(String[] args) {
+		Student student = new Student("홍길동", "123456-1234567", 1);
+		System.out.println("name : " + student.name);
+		System.out.println("ssn : " + student.ssn);
+		System.out.println("studentNo : " + student.studentNo);
+	}
+}
+
+//부모 클래스
+package sec01.exam03;
+
+public class Calculator {	
+	double areaCircle(double r) { 
+		System.out.println("Calculator 객체의 areaCircle() 실행");
+		return 3.14159 * r * r; 
+	}
+}
+
+//자식 클래스
+package sec01.exam03;
+
+public class Computer extends Calculator {
+	@Override
+	double areaCircle(double r) {
+	System.out.println("Computer 객체의 areaCircle() 실행");
+		return Math.PI * r * r;
+	}
+}
+
+//메소드 재정의 테스트
+package sec01.exam03;
+
+public class ComputerExample {
+	public static void main(String[] args) {		
+		int r = 10;		
+		Calculator calculator = new Calculator();
+		System.out.println("원면적 : " + calculator.areaCircle(r));		
+		System.out.println();		
+		Computer computer = new Computer();
+		System.out.println("원면적 : " + computer.areaCircle(r));
+	}
+}
+
+//super 변수
+package sec01.exam04;
+
+public class Airplane {
+	public void land() {
+		System.out.println("착륙합니다.");
+	}	
+	public void fly() {
+		System.out.println("일반비행합니다.");
+	}	
+	public void takeOff() {
+		System.out.println("이륙합니다.");
+	}	
+}
+
+package sec01.exam04;
+
+public class SupersonicAirplane extends Airplane {
+	public static final int NORMAL = 1;
+	public static final int SUPERSONIC = 2;
+	
+	public int flyMode = NORMAL;
+	
+	@Override
+	public void fly() {
+		if(flyMode == SUPERSONIC) {
+			System.out.println("초음속비행합니다.");			
+		} else {
+			//Airplane 객체의 fly() 메소드 호출
+			super.fly();
+		}
+	}
+}
+
+package sec01.exam04;
+
+public class SupersonicAirplaneExample {
+	public static void main(String[] args) {			
+		SupersonicAirplane sa = new SupersonicAirplane();		
+		sa.takeOff();
+		sa.fly();		
+		sa.flyMode = SupersonicAirplane.SUPERSONIC;
+		sa.fly();		
+		sa.flyMode = SupersonicAirplane.NORMAL;
+		sa.fly();		
+		sa.land();
+	}
+}
+
+//상속할 수 없는 final 클래스
+package sec01.exam05;
+
+public final class Member {
+}
+
+package sec01.exam05;
+
+//Member를 상속할 수 없음
+public class VeryVeryImportantPerson extends Member {
+public class VeryImportantPerson {
+}
+
+//재정의할 수 없는 final 메소드
+  package sec01.exam06;
+
+public class Car {
+	//필드
+	public int speed;
+	
+	//메소드
+	public void speedUp() {
+		speed += 1;
+	}		
+	
+	//final 메소드
+	public final void stop() {
+		System.out.println("차를 멈춤");
+		speed = 0;
+	}
+}
+
+package sec01.exam06;
+
+public class SportsCar extends Car {
+	@Override
+	public void speedUp() {
+		speed += 10;
+	}
+	
+	//오버라이딩을 할 수 없음
+	/*
+	@Override
+	public void stop() {
+		System.out.println("스포츠카를 멈춤"); <——— 재정의할 수 없음
+		speed = 0;
+	}
+	*/
+}
+
+//상속과 관련 있는 protected 역할
+
+//protected 접근 제한자
+package sec01.exam07.pack1;
+
+public class A {
+	protected String field;
+	
+	protected A() {
+	}
+	
+	protected void method() {
+	}
+}
+
+//protected 접근 제한자 테스트
+package sec01.exam07.pack1;
+
+public class B {
+	public void method() {
+		A a = new A();
+		a.field = "value"; <——— 접근 가능
+		a.method();
+	}
+}
+
+//protected 접근 제한자 테스트
+package sec01.exam07.pack2;
+
+import sec01.exam07.pack1.A;
+
+public class C {
+	public void method() {
+		/*
+		A a = new A();
+		a.field = "value"; <——— 접근 불가능
+		a.method();
+		*/
+	}
+}
+
+//protected 접근 제한자
+package sec01.exam07.pack2;
+
+import sec01.exam07.pack1.A;
+
+public class D extends A {
+	public D() {
+		super();
+		this.field = "value"; <——— 접근 가능
+		this.method();
+	}
+}
