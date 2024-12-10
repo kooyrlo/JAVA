@@ -1,0 +1,149 @@
+//인스턴스 멤버와 this
+package sec05.exam01;
+
+public class Car {
+	//필드
+	String model;
+	int speed;
+	
+	//생성자
+	Car(String model) {
+		this.model = model;
+	}
+	
+	//메소드
+	void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
+	void run() {
+		for(int i=10; i<=50; i+=10) {
+			this.setSpeed(i);
+			System.out.println(this.model + "가 달립니다.(시속:" + this.speed + "km/h)");
+		}
+	}	
+}
+
+package sec05.exam01;
+
+public class CarExample {
+	public static void main(String[] args) {
+		Car myCar = new Car("포르쉐");
+		Car yourCar = new Car("벤츠");
+		
+		myCar.run();
+		yourCar.run();
+	}
+}
+
+//정적 멤버 사용
+package sec05.exam02;
+
+public class Calculator {
+	static double pi = 3.14159;
+	
+	static int plus(int x, int y) {
+		return x + y;
+	}
+	
+	static int minus(int x, int y) {
+		return x - y;
+	}
+}
+
+package sec05.exam02;
+
+public class CalculatorExample {
+	public static void main(String[] args) {
+		double result1 = 10 * 10 * Calculator.pi;
+		int result2 = Calculator.plus(10, 5);
+		int result3 = Calculator.minus(10, 5);
+		
+		System.out.println("result1 : " + result1);
+		System.out.println("result2 : " + result2);
+		System.out.println("result3 : " + result3);
+	}
+}
+
+//싱글톤
+package sec05.exam04;
+
+public class Singleton {
+	private static Singleton singleton = new Singleton();
+	
+	private Singleton() {}
+	
+	static Singleton getInstance() {
+		return singleton;
+	}
+}
+
+//싱글톤 객체
+package sec05.exam04;
+
+public class SingletonExample {
+	public static void main(String[] args) {
+		/*
+		Singleton obj1 = new Singleton();  //컴파일 에러
+		Singleton obj2 = new Singleton();  //컴파일 에러
+		*/
+		
+		Singleton obj1 = Singleton.getInstance();
+		Singleton obj2 = Singleton.getInstance();
+		
+		if(obj1 == obj2) {
+			System.out.println("같은 Singleton 객체 입니다.");
+		} else {
+			System.out.println("다른 Singleton 객체 입니다.");
+		}
+	}
+}
+
+//final 필드 선언과 초기화
+package sec05.exam05;
+
+public class Person {
+	final String nation = "Korea";
+	final String ssn;
+	String name;
+	
+	public Person(String ssn, String name) {
+		this.ssn = ssn;
+		this.name = name;
+	}
+}
+
+//final 필드 테스트
+package sec05.exam05;
+
+public class PersonExample {
+	public static void main(String[] args) {
+		Person p1 = new Person("123456-1234567", "홍길동");
+		
+		System.out.println(p1.nation);
+		System.out.println(p1.ssn);
+		System.out.println(p1.name);
+		
+		//p1.nation = "usa";
+		//p1.ssn = "654321-7654321";
+		p1.name = "홍삼원";;
+	}
+}
+
+//상수 선언
+package sec05.exam06;
+
+public class Earth {
+	static final double EARTH_RADIUS = 6400;
+	static final double EARTH_AREA = 4 * Math.PI * EARTH_RADIUS * EARTH_RADIUS;
+}
+
+//상수 사용
+package sec05.exam06;
+
+public class EarthExample {
+	public static void main(String[] args) {		
+		System.out.println("지구의 반지름: " + Earth.EARTH_RADIUS + " km");
+		System.out.println("지구의 표면적: " + Earth.EARTH_AREA + "  km^2");		
+	}
+}
