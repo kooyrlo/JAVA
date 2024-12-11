@@ -1,0 +1,198 @@
+//상수 필드 선언
+package sec01.exam02;
+
+public interface RemoteControl {
+	int MAX_VOLUME = 10;
+	int MIN_VOLUME = 0;
+}
+
+//추상 메소드 선언
+package sec01.exam03;
+
+public interface RemoteControl {
+	//상수
+	int MAX_VOLUME = 10;
+	int MIN_VOLUME = 0;
+	
+	//추상 메소드
+	void turnOn();
+	void turnOff();
+	void setVolume(int volume);
+}
+
+//구현 클래스
+package sec01.exam04;
+
+public class Television implements RemoteControl {
+	//필드
+	private int volume;
+	
+	//turnOn() 추상 메소드의 실체 메소드
+	public void turnOn() {
+		System.out.println("TV를 켭니다.");
+	}	
+	//turnOff() 추상 메소드의 실체 메소드
+	public void turnOff() {
+		System.out.println("TV를 끕니다.");
+	}
+	//setVolume() 추상 메소드의 실체 메소드
+	public void setVolume(int volume) {
+		if(volume>RemoteControl.MAX_VOLUME) {
+			this.volume = RemoteControl.MAX_VOLUME;
+		} else if(volume<RemoteControl.MIN_VOLUME) {
+			this.volume = RemoteControl.MIN_VOLUME;
+		} else {
+			this.volume = volume;
+		}
+		System.out.println("현재 TV 볼륨: " + this.volume);
+	}
+}
+
+package sec01.exam04;
+
+public class Audio implements RemoteControl {
+	//필드
+	private int volume;
+	
+	//turnOn() 추상 메소드의 실체 메소드
+	public void turnOn() {
+		System.out.println("Audio를 켭니다.");
+	}	
+	//turnOff() 추상 메소드의 실체 메소드
+	public void turnOff() {
+		System.out.println("Audio를 끕니다.");
+	}
+	//setVolume() 추상 메소드의 실체 메소드
+	public void setVolume(int volume) {
+		if(volume>RemoteControl.MAX_VOLUME) {
+			this.volume = RemoteControl.MAX_VOLUME;
+		} else if(volume<RemoteControl.MIN_VOLUME) {
+			this.volume = RemoteControl.MIN_VOLUME;
+		} else {
+			this.volume = volume;
+		}
+		System.out.println("현재 Audio 볼륨: " + this.volume);
+	}
+}
+
+//인터페이스 변수에 구현 객체 대입
+package sec01.exam04;
+
+public class RemoteControlExample {
+	public static void main(String[] args) {
+		RemoteControl rc;
+		
+		rc = new Television();
+		//rc.turnOn();
+		//rc.setVolume(10);
+		//rc.turnOff();
+		
+		rc = new Audio();
+		//rc.turnOn();
+		//rc.setVolume(10);
+		//rc.turnOff();
+	}
+}
+
+//인터페이스
+package sec01.exam05;
+
+public interface Searchable {
+	void search(String url);
+}
+
+//다중 인터페이스 구현 클래스
+package sec01.exam05;
+
+public class SmartTelevision implements RemoteControl, Searchable {
+	private int volume;
+	
+	public void turnOn() {
+		System.out.println("TV를 켭니다.");
+	}	
+	public void turnOff() {
+		System.out.println("TV를 끕니다.");
+	}
+	public void setVolume(int volume) {
+		if(volume>RemoteControl.MAX_VOLUME) {
+			this.volume = RemoteControl.MAX_VOLUME;
+		} else if(volume<RemoteControl.MIN_VOLUME) {
+			this.volume = RemoteControl.MIN_VOLUME;
+		} else {
+			this.volume = volume;
+		}
+		System.out.println("현재 TV 볼륨: " + this.volume);
+	}
+	
+	public void search(String url) {
+		System.out.println(url + "을 검색합니다.");
+	}
+}
+
+//인터페이스 변수에 구현 객체 대입
+package sec01.exam05;
+
+public class SmartTelevisionExample {
+	public static void main(String[] args) {
+		SmartTelevision tv = new SmartTelevision();
+		
+		RemoteControl rc = tv;	
+		Searchable searchable = tv;
+	}
+}
+
+//인터페이스 사용
+package sec01.exam06;
+
+public class MyClass {
+	// 필드
+	RemoteControl rc = new Television();
+
+	// 생성자
+	MyClass() {
+	}
+
+	MyClass(RemoteControl rc) {
+		this.rc = rc;
+		rc.turnOn();
+		rc.setVolume(5);
+	}
+
+	// 메소드
+	void methodA() {
+		RemoteControl rc = new Audio();
+		rc.turnOn();
+		rc.setVolume(5);
+	}
+
+	void methodB(RemoteControl rc) {
+		rc.turnOn();
+		rc.setVolume(5);
+	}
+}
+
+package sec01.exam06;
+
+public class MyClassExample {
+	public static void main(String[] args) {
+		System.out.println("1)----------------");
+		
+		MyClass myClass1 = new MyClass();
+		myClass1.rc.turnOn();
+		myClass1.rc.setVolume(5);
+		
+		System.out.println("2)----------------");
+		
+		MyClass myClass2 = new MyClass(new Audio());
+		
+		System.out.println("3)----------------");
+		
+		MyClass myClass3 = new MyClass();
+		myClass3.methodA();
+		
+		System.out.println("4)----------------");
+		
+		MyClass myClass4 = new MyClass();
+		myClass4.methodB(new Television());
+	}
+}
