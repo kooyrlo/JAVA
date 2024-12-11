@@ -1,0 +1,234 @@
+//인터페이스
+package sec02.exam01;
+
+public interface Tire {
+	public void roll();
+}
+
+//구현 클래스
+package sec02.exam01;
+
+public class HankookTire implements Tire {
+	@Override
+	public void roll() {
+		System.out.println("한국 타이어가 굴러갑니다.");
+	}
+}
+
+package sec02.exam01;
+
+public class KumhoTire implements Tire {
+	@Override
+	public void roll() {
+		System.out.println("금호 타이어가 굴러갑니다.");
+	}
+}
+
+//필드 다형성
+package sec02.exam01;
+
+public class Car {
+	Tire frontLeftTire = new HankookTire();
+	Tire frontRightTire = new HankookTire();
+	Tire backLeftTire = new HankookTire();
+	Tire backRightTire = new HankookTire();
+	
+	void run() {
+		frontLeftTire.roll();
+		frontRightTire.roll();
+		backLeftTire.roll();
+		backRightTire.roll();
+	}
+}
+
+//필드 다형성 테스트
+package sec02.exam01;
+
+public class CarExample {
+	public static void main(String[] args) {
+		Car myCar = new Car();
+		
+		myCar.run();
+		
+		myCar.frontLeftTire = new KumhoTire();
+		myCar.frontRightTire = new KumhoTire();
+		
+		myCar.run();
+	}
+}
+
+//매개 변수의 인터페이스화
+package sec02.exam02;
+
+public class Driver {
+	public void drive(Vehicle vehicle) {
+		vehicle.run();
+	}
+}
+
+//인터페이스
+package sec02.exam02;
+
+public interface Vehicle {
+	public void run();
+}
+
+//구현 클래스
+package sec02.exam02;
+
+public class Bus implements Vehicle {
+	@Override
+	public void run() {
+		System.out.println("버스가 달립니다.");
+	}
+}
+
+package sec02.exam02;
+
+public class Taxi implements Vehicle {
+	@Override
+	public void run() {
+		System.out.println("택시가 달립니다.");
+	}
+}
+
+//매개 변수의 다형성 테스트
+package sec02.exam02;
+
+public class DriverExample {
+	public static void main(String[] args) {
+		Driver driver = new Driver();
+		
+		Bus bus = new Bus();
+		Taxi taxi = new Taxi();
+		
+		driver.drive(bus);
+		driver.drive(taxi);
+	}
+}
+
+//인터페이스
+package sec02.exam03;
+
+public interface Vehicle {
+	public void run();
+}
+
+//구현 클래스
+package sec02.exam03;
+
+public class Bus implements Vehicle {
+	@Override
+	public void run() {
+		System.out.println("버스가 달립니다.");
+	}
+	
+	public void checkFare() {
+		System.out.println("승차요금을 체크합니다.");
+	}
+}
+
+//강제 타입 변환
+package sec02.exam03;
+
+public class VehicleExample {
+	public static void main(String[] args) {
+		Vehicle vehicle = new Bus();
+
+		vehicle.run();
+		//vehicle.checkFare(); (x)
+
+		Bus bus = (Bus) vehicle;  //강제타입변환
+
+		bus.run();
+		bus.checkFare();
+	}
+}
+
+//객체 타입 확인
+package sec02.exam04;
+
+public class Driver {
+	public void drive(Vehicle vehicle) {
+		if(vehicle instanceof Bus) {
+			Bus bus = (Bus) vehicle;
+			bus.checkFare();
+		}
+		vehicle.run();
+	}
+}
+
+package sec02.exam04;
+
+public class DriverExample {
+	public static void main(String[] args) {
+		Driver driver = new Driver();
+		
+		Bus bus = new Bus();
+		Taxi taxi = new Taxi();
+		
+		driver.drive(bus);
+		driver.drive(taxi);
+	}
+}
+
+//인터페이스 상속
+
+//상위 인터페이스
+package sec02.exam05;
+
+public interface InterfaceA {
+	public void methodA();
+}
+
+package sec02.exam05;
+
+public interface InterfaceB {
+	public void methodB();
+}
+
+//하위 인터페이스
+package sec02.exam05;
+
+public interface InterfaceC extends InterfaceA, InterfaceB {
+	public void methodC();
+}
+
+//하위 인터페이스 구현
+package sec02.exam05;
+
+public class ImplementationC implements InterfaceC {
+	public void methodA() {
+		System.out.println("ImplementationC-methodA() 실행");
+	}	
+	
+	public void methodB() {
+		System.out.println("ImplementationC-methodB() 실행");
+	}
+	
+	public void methodC() {
+		System.out.println("ImplementationC-methodC() 실행");
+	}
+}
+
+//호출 기능 메소드
+package sec02.exam05;
+
+public class Example {
+	public static void main(String[] args) {
+		ImplementationC impl = new ImplementationC();
+		
+		InterfaceA ia = impl;
+		ia.methodA();
+		System.out.println();
+		
+		InterfaceB ib = impl;
+		ib.methodB();
+		System.out.println();
+		
+		InterfaceC ic = impl;
+		ic.methodA();
+		ic.methodB();
+		ic.methodC();
+	}
+}
