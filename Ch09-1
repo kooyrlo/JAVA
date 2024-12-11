@@ -1,0 +1,244 @@
+//중첩 클래스
+package sec01.exam01;
+
+/**바깥 클래스**/
+class A {
+	A() { System.out.println("A 객체가 생성됨"); }
+	
+	/**인스턴스 멤버 클래스**/
+	public class B {
+		B() { System.out.println("B 객체가 생성됨"); }
+		int field1;
+		//static int field2; //Java 17부터 허용
+		void method1() { }
+		//static void method2() { } //Java 17부터 허용
+	}
+	
+	/**정적 멤버 클래스**/
+	static class C {
+		C() { System.out.println("C 객체가 생성됨"); }
+		int field1;
+		static int field2;
+		void method1() { }
+		static void method2() { }
+	}
+	
+	void method() {
+		/**로컬 클래스**/
+		class D {
+			D() { System.out.println("D 객체가 생성됨"); }
+			int field1;
+			//static int field2; //Java 17부터 허용
+			void method1() { }
+			//static void method2() { } //Java 17부터 허용
+		}
+		D d = new D();
+		d.field1 = 3;
+		d.method1();
+		//D.field2 = 3; //Java 17부터 허용
+		//D.method2(); //Java 17부터 허용
+	}
+}
+
+//중첩 클래스 객체 생성
+package sec01.exam01;
+
+public class Main {
+	public static void main(String[] args) {
+		A a = new A();
+		
+		//인스턴스 멤버 클래스 객체 생성
+		A.B b = a.new B();
+		b.field1 = 3;
+		b.method1();
+		//A.B.field2 = 3; //Java 17부터 허용
+		//A.B.method2(); 	//Java 17부터 허용
+		
+		//정적 멤버 클래스 객체 생성
+		A.C c = new A.C();
+		c.field1 = 3;
+		c.method1();
+		A.C.field2 = 3;
+		A.C.method2();
+		
+		//로컬 클래스 객체 생성을 위한 메소드 호출
+		a.method();
+	}
+}
+
+//바깥 필드와 메소드에서 사용 제한
+package sec01.exam02;
+
+public class A {
+	//인스턴스 필드
+	B field1 = new B();               
+	C field2 = new C();               
+	
+	//인스턴스 메소드
+	void method1() {
+		B var1 = new B();
+		C var2 = new C();
+	}
+	
+	//정적 필드 초기화
+	//static B field3 = new B();
+	static C field4 = new C();
+	
+	//정적 메소드
+	static void method2() {
+		//B var1 = new B();
+		C var2 = new C();
+	}
+	
+	//인스턴스 멤버 클래스
+	class B {}
+	//정적 멤버 클래스
+	static class C {}	
+}
+
+//멤버 클래스에서 사용 제한
+package sec01.exam03;
+
+public class A {
+	int field1;
+	void method1() { }
+	
+	static int field2;
+	static void method2() { }
+	
+	class B {
+		void method() {
+			field1 = 10;
+			method1();
+
+			field2 = 10;
+			method2();
+		}
+	}
+	
+	static class C {
+		void method() {
+			//field1 = 10;
+			//method1();
+
+			field2 = 10;
+			method2();
+		}
+	}	
+}
+
+//로컬 클래스에서 사용 제한
+package sec01.exam04;
+
+public class Outter {
+	//자바7 이전
+	public void method1(final int arg) {
+		final int localVariable = 1;
+		//arg = 100; (x)
+		//localVariable = 100; (x)
+		class Inner {
+			public void method() {
+				int result = arg + localVariable;
+			}
+		}
+	}
+	
+	//자바8 이후
+	public void method2(int arg) {
+		int localVariable = 1;
+		//arg = 100; (x)
+		//localVariable = 100; (x)
+		class Inner {
+			public void method() {
+				int result = arg + localVariable;
+			}
+		}
+	}
+}   
+
+//중첩 클래스에서 바깥 클래스 참조 얻기
+package sec01.exam05;
+
+public class Outter {
+	String field = "Outter-field";
+	void method() {
+		System.out.println("Outter-method");
+	}
+	
+	class Nested {
+		String field = "Nested-field";
+		void method() {
+			System.out.println("Nested-method");
+		}
+		void print() {
+			System.out.println(this.field);
+			this.method();
+			System.out.println(Outter.this.field);
+			Outter.this.method();
+		}
+	}
+}
+
+//실행 클래스
+package sec01.exam05;
+
+public class OutterExample {
+	public static void main(String[] args) {
+		Outter outter = new Outter();
+		Outter.Nested nested = outter.new Nested();
+		nested.print();
+	}
+}
+
+//중첩 인터페이스
+package sec01.exam06;
+
+public class Button {
+	OnClickListener listener;
+	
+	void setOnClickListener(OnClickListener listener) {
+		this.listener = listener;
+	}
+	
+	void touch() {
+		listener.onClick();
+	}
+	
+	static interface OnClickListener {
+		void onClick();
+	}
+}
+
+//구현 클래스
+package sec01.exam06;
+
+public class CallListener implements Button.OnClickListener {
+	@Override
+	public void onClick() {
+		System.out.println("전화를 겁니다.");
+	}
+}
+
+package sec01.exam06;
+
+public class MessageListener implements Button.OnClickListener {
+	@Override
+	public void onClick() {
+		System.out.println("메시지를 보냅니다.");
+	}
+}
+
+//버튼 이벤트 처리
+package sec01.exam06;
+
+public class ButtonExample {
+	public static void main(String[] args) {
+		Button btn = new Button();
+		
+		btn.setOnClickListener(new CallListener());
+		btn.touch();
+		
+		btn.setOnClickListener(new MessageListener());
+		btn.touch();
+	}
+}
