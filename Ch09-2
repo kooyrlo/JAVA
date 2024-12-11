@@ -1,0 +1,243 @@
+//부모 클래스
+package sec02.exam01;
+
+public class Person {
+	void wake() {
+		System.out.println("7시에 일어납니다.");
+	}
+}
+
+//익명 자식 객체 생성
+package sec02.exam01;
+
+public class Anonymous {
+	//필드 초기값으로 대입
+	Person field = new Person() {
+		void work() {
+			System.out.println("출근합니다.");
+		}
+		@Override
+		void wake() {
+			System.out.println("6시에 일어납니다.");
+			work();
+		}
+	};
+	
+	void method1() {
+		//로컬변수값으로 대입
+		Person localVar = new Person() {
+			void walk() {
+				System.out.println("산책합니다.");
+			}
+			@Override
+			void wake() {
+				System.out.println("7시에 일어납니다.");
+				walk();
+			}
+		};
+		//로컬변수 사용
+		localVar.wake();
+	}
+	
+	void method2(Person person) {
+		person.wake();
+	}
+}
+
+package sec02.exam01;
+
+public class AnonymousExample {
+	public static void main(String[] args) {
+		Anonymous anony = new Anonymous();
+		//익명 객체 필드 사용
+		anony.field.wake();
+		//익명 객체 로컬변수 사용
+		anony.method1();
+		//익명 객체 매개값 사용
+		anony.method2(
+			new Person() {
+				void study() {
+					System.out.println("공부합니다.");
+				}
+				@Override
+				void wake() {
+					System.out.println("8시에 일어납니다.");
+					study();
+				}
+			}
+		);
+	}
+}
+
+//인터페이스
+package sec02.exam02;
+
+public interface RemoteControl {
+	public void turnOn();
+	public void turnOff();
+}
+
+//익명 구현 객체 생성
+package sec02.exam02;
+
+public class Anonymous {
+	//필드 초기값으로 대입
+	RemoteControl field = new RemoteControl() {
+		@Override
+		public void turnOn() {
+			System.out.println("TV를 켭니다.");
+		}
+		@Override
+		public void turnOff() {
+			System.out.println("TV를 끕니다.");
+		}
+	};
+	
+	void method1() {
+		//로컬변수값으로 대입
+		RemoteControl localVar = new RemoteControl() {
+			@Override
+			public void turnOn() {
+				System.out.println("Audio를 켭니다.");
+			}
+			@Override
+			public void turnOff() {
+				System.out.println("Audio를 끕니다.");
+			}
+		};
+		//로컬변수 사용
+		localVar.turnOn();
+	}
+	
+	void method2(RemoteControl rc) {
+		rc.turnOn();
+	}
+}
+
+package sec02.exam02;
+
+public class AnonymousExample {
+	public static void main(String[] args) {
+		Anonymous anony = new Anonymous();
+		//익명 객체 필드 사용
+		anony.field.turnOn();
+		//익명 객체 로컬변수 사용
+		anony.method1();
+		//익명 객체 매개값 사용
+		anony.method2(
+			new RemoteControl() {
+				@Override
+				public void turnOn() {
+					System.out.println("SmartTV를 켭니다.");
+				}
+				@Override
+				public void turnOff() {
+					System.out.println("SmartTV를 끕니다.");
+				}
+			}
+		);
+	}
+}
+
+//UI 클래스
+package sec02.exam03;
+
+public class Button {
+	OnClickListener listener;
+	
+	void setOnClickListener(OnClickListener listener) {
+		this.listener = listener;
+	}
+	
+	void touch() {
+		listener.onClick();
+	}
+	
+	static interface OnClickListener {
+		void onClick();
+	}
+}
+
+package sec02.exam03;
+
+public class Window {
+	Button button1 = new Button();
+	Button button2 = new Button();
+	
+	//필드 초기값으로 대입
+	Button.OnClickListener listener = new Button.OnClickListener() {
+		@Override
+		public void onClick() {
+			System.out.println("전화를 겁니다.");
+		}
+	};
+	
+	Window() {
+		button1.setOnClickListener(listener);
+		
+		//매개값으로 대입
+		button2.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick() {
+				System.out.println("메시지를 보냅니다.");
+			}
+		});
+	}
+}
+
+//실행 클래스
+package sec02.exam03;
+
+public class Main {
+	public static void main(String[] args) {
+		Window w = new Window();
+		w.button1.touch();
+		w.button2.touch();
+	}
+}
+
+//인터페이스
+package sec02.exam04;
+
+public interface Calculatable {
+	public int sum();
+}
+
+//익명 객체의 로컬 변수 사용
+package sec02.exam04;
+
+public class Anonymous {
+	private int field;
+	
+	public void method(final int arg1, int arg2) {
+		final int var1 = 0;
+		int var2 = 0;
+		
+		field = 10;
+		
+		//arg1 = 20; (x)
+		//arg2 = 20; (x)
+		
+		//var1 = 30; (x)
+		//var2 = 30; (x)
+		
+		Calculatable calc = new Calculatable() {
+			@Override
+			public int sum() {
+				int result = field + arg1 + arg2 + var1 + var2;
+				return result;
+			}
+		};
+		
+		System.out.println(calc.sum());
+	}
+}
+
+package sec02.exam04;
+
+public class AnonymousExample {
+	public static void main(String[] args) {
+		Anonymous anony = new Anonymous();
+		anony.method(0, 0);
+	}
+}
