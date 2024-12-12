@@ -1,0 +1,327 @@
+//String 객체를 저장하는 ArrayList
+package sec01.exam01;
+
+import java.util.*;
+
+public class ArrayListExample {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		
+		list.add("Java");
+		list.add("JDBC");
+		list.add("Servlet/JSP");
+		list.add(2, "Database");
+		list.add("iBATIS");
+
+		int size = list.size();
+		System.out.println("총 객체수: " + size);		
+		System.out.println();
+		
+		String skill = list.get(2);
+		System.out.println("2: " + skill);
+		System.out.println();
+
+		for(int i=0; i<list.size(); i++) {
+			String str = list.get(i);
+			System.out.println(i + ":" + str);
+		}
+		System.out.println();
+				
+		list.remove(2);
+		list.remove(2);
+		list.remove("iBATIS");		
+		
+		for(int i=0; i<list.size(); i++) {
+			String str = list.get(i);
+			System.out.println(i + ":" + str);
+		}
+	}
+}
+
+//Board 객체를 저장하는 Vector
+package sec01.exam02;
+
+import java.util.List;
+import java.util.Vector;
+
+public class VectorExample {
+	public static void main(String[] args) {
+		List<Board> list = new Vector<Board>();
+	
+		list.add(new Board("제목1", "내용1", "글쓴이1"));
+		list.add(new Board("제목2", "내용2", "글쓴이2"));
+		list.add(new Board("제목3", "내용3", "글쓴이3"));
+		list.add(new Board("제목4", "내용4", "글쓴이4"));
+		list.add(new Board("제목5", "내용5", "글쓴이5"));
+		
+		list.remove(2);
+		list.remove(3);
+		
+		for(int i=0; i<list.size(); i++) {
+			Board board = list.get(i);
+			System.out.println(board.subject + "\t" + board.content + "\t" + board.writer);
+		}
+	}
+}
+
+//게시물 정보 객체
+package sec01.exam02;
+
+public class Board {
+	String subject;
+	String content;
+	String writer;
+	public Board(String subject, String content, String writer) {
+		this.subject = subject;
+		this.content = content;
+		this.writer = writer;
+	}
+}
+
+//ArrayList와 LinkedList의 실행 성능 비교
+package sec01.exam03;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListExample {
+	public static void main(String[] args) {
+		List<String> list1 = new ArrayList<String>();
+		List<String> list2 = new LinkedList<String>();
+		
+		long startTime;
+		long endTime;
+		
+		startTime = System.nanoTime();
+		for(int i=0; i<10000; i++) {
+			list1.add(0, String.valueOf(i));
+		}
+		endTime = System.nanoTime();
+		System.out.println("ArrayList 걸린시간: " + (endTime-startTime) + " ns");
+		
+		startTime = System.nanoTime();
+		for(int i=0; i<10000; i++) {
+			list2.add(0, String.valueOf(i));
+		}
+		endTime = System.nanoTime();
+		System.out.println("LinkedList 걸린시간: " + (endTime-startTime) + " ns");
+	}
+}
+
+//String 객체를 중복 없이 저장하는 HashSet
+package sec01.exam04;
+
+import java.util.*;
+
+public class HashSetExample1 {
+	public static void main(String[] args) {
+		Set<String> set = new HashSet<String>();
+		
+		set.add("Java");
+		set.add("JDBC");
+		set.add("Servlet/JSP");
+		set.add("Java");
+		set.add("iBATIS");
+		
+		int size = set.size();
+		System.out.println("총 객체수: " + size);
+		
+		Iterator<String> iterator = set.iterator();
+		while(iterator.hasNext()) {
+			String element = iterator.next();
+			System.out.println("\t" + element);
+		}
+		
+		set.remove("JDBC");
+		set.remove("iBATIS");
+		
+		System.out.println("총 객체수: " + set.size());
+		
+		for(String element : set) {
+			System.out.println("\t" + element);
+		}
+		
+		set.clear();		
+		if(set.isEmpty()) { System.out.println("비어 있음"); }
+	}
+}
+
+//hashCode()와 equals() 메소드 정의
+package sec01.exam05;
+
+public class Member {
+	public String name;
+	public int age;
+	
+	public Member(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+
+	public boolean equals(Object obj) {
+		if(obj instanceof Member) {
+			Member member = (Member) obj;
+			return member.name.equals(name) && (member.age==age) ;
+		} else {
+			return false;
+		}
+	}
+
+	public int hashCode() {
+		return name.hashCode() + age;
+	}
+}
+
+//Member 객체를 중복 없이 저장하는 HashSet
+package sec01.exam05;
+
+import java.util.*;
+
+public class HashSetExample {
+	public static void main(String[] args) {
+		Set<Member> set = new HashSet<Member>();
+		
+		set.add(new Member("홍길동", 30));
+		set.add(new Member("홍길동", 30));
+		
+		System.out.println("총 객체수 : " + set.size());
+	}
+}
+
+//이름을 키로 점수를 값으로 저장하기
+package sec01.exam06;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+public class HashMapExample {
+	public static void main(String[] args) {
+		//Map 컬렉션 생성
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		//객체 저장
+		map.put("신용권", 85);
+		map.put("홍길동", 90);
+		map.put("동장군", 80);
+		map.put("홍길동", 95);
+		System.out.println("총 Entry 수: " + map.size());
+		
+		//객체 찾기		
+		System.out.println("\t홍길동 : " + map.get("홍길동"));
+		System.out.println();
+		
+		//객체를 하나씩 처리
+		Set<String> keySet = map.keySet();
+		Iterator<String> keyIterator = keySet.iterator();
+		while(keyIterator.hasNext()) {
+		  String key = keyIterator.next();
+		  Integer value = map.get(key);
+		  System.out.println("\t" + key + " : " + value);
+		}		
+		System.out.println();	
+		
+		//객체 삭제
+		map.remove("홍길동");
+		System.out.println("총 Entry 수: " + map.size());
+		
+		//객체를 하나씩 처리
+		Set<Map.Entry<String, Integer>> entrySet = map.entrySet();
+		Iterator<Map.Entry<String, Integer>> entryIterator = entrySet.iterator();
+		while(entryIterator.hasNext()) {
+		  Map.Entry<String, Integer> entry = entryIterator.next();
+		  String key = entry.getKey();
+		  Integer value = entry.getValue();
+		  System.out.println("\t" + key + " : " + value);
+		}
+		System.out.println();
+		
+		//객체 전체 삭제
+		map.clear();
+		System.out.println("총 Entry 수: " + map.size());
+	}
+}
+
+//키로 사용할 객체 -hashCode()와 equals() 재정의
+package sec01.exam07;
+
+public class Student {
+	public int sno;
+	public String name;
+	
+	public Student(int sno, String name) {
+		this.sno = sno;
+		this.name = name;
+	}
+
+	public boolean equals(Object obj) { <——— 학번과 이름이 같다면 true를 리턴
+		if(obj instanceof Student) {
+			Student student = (Student) obj;
+			return (sno==student.sno) && (name.equals(student.name)) ;
+		} else {
+			return false;
+		}
+	}
+
+	public int hashCode() { <——— 학번과 이름이 같다면 동일한 값을 리턴
+		return sno + name.hashCode();
+	}
+}
+
+//학번과 이름이 동일한 경우 같은 키로 인식
+package sec01.exam07;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapExample {
+	public static void main(String[] args) {
+		Map<Student, Integer> map = new HashMap<Student, Integer>();
+		
+		map.put(new Student(1, "홍길동"), 95);
+		map.put(new Student(1, "홍길동"), 95);
+		
+		System.out.println("총 Entry 수: " + map.size());
+	}
+}
+
+//아이디와 비밀번호 검사하기
+package sec01.exam08;
+
+import java.util.*;
+
+public class HashtableExample {
+	public static void main(String[] args) {
+		Map<String, String> map = new Hashtable<>();
+
+		map.put("spring", "12");
+		map.put("summer", "123");
+		map.put("fall", "1234");
+		map.put("winter", "12345");
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		while(true) {
+			System.out.println("아이디와 비밀번호를 입력해주세요");
+			System.out.print("아이디: ");
+			String id = scanner.nextLine();
+			
+			System.out.print("비밀번호: ");
+			String password = scanner.nextLine();
+			System.out.println();
+			
+			if(map.containsKey(id)) {
+				if(map.get(id).equals(password)) {
+					System.out.println("로그인 되었습니다");
+					break;
+				} else {
+					System.out.println("비밀번호가 일치하지 않습니다.");
+				}				
+			} else {
+				System.out.println("입력하신 아이디가 존재하지 않습니다");
+			}
+		}
+	}
+}
