@@ -1,0 +1,212 @@
+//메인 스레드만 이용한 경우
+package sec01.exam01;
+
+import java.awt.Toolkit;
+
+public class BeepPrintExample1 {
+	public static void main(String[] args) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();	
+		for(int i=0; i<5; i++) {		
+			toolkit.beep();
+			try { Thread.sleep(500); } catch(Exception e) {}
+		}
+
+		for(int i=0; i<5; i++) {
+			System.out.println("띵");
+			try { Thread.sleep(500); } catch(Exception e) {}
+		}
+	}
+}
+
+//비프음을 들려주는 작업 정의
+package sec01.exam02;
+
+import java.awt.Toolkit;
+
+public class BeepTask implements Runnable {	
+	public void run() {		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();	
+		for(int i=0; i<5; i++) {		
+			toolkit.beep();
+			try { Thread.sleep(500); } catch(Exception e) {}
+		}
+	}
+}
+
+//메인 스레드와 작업 스레드가 동시에 실행
+package sec01.exam02;
+
+public class BeepPrintExample2 {
+	public static void main(String[] args) {
+		Runnable beepTask = new BeepTask();
+		Thread thread = new Thread(beepTask);
+		thread.start();
+		
+		for(int i=0; i<5; i++) {
+			System.out.println("띵");
+			try { Thread.sleep(500); } catch(Exception e) {}
+		}
+	}
+}
+
+//비프음을 들려주는 스레드
+package sec01.exam04;
+
+import java.awt.Toolkit;
+
+public class BeepThread extends Thread {
+	@Override
+	public void run() {		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();	
+		for(int i=0; i<5; i++) {		
+			toolkit.beep();
+			try { Thread.sleep(500); } catch(Exception e) {}
+		}
+	}
+}
+
+//메인 스레드와 작업 스레드가 동시에 실행
+package sec01.exam04;
+
+public class BeepPrintExample4 {
+	public static void main(String[] args) {
+		Thread thread = new BeepThread();
+		thread.start();		
+		
+		for(int i=0; i<5; i++) {
+			System.out.println("띵");
+			try { Thread.sleep(500); } catch(Exception e) {}
+		}
+	}
+}
+
+//메인 스레드 이름 출력 및 UserThread 생성 및 시작
+package sec01.exam06;
+
+public class ThreadNameExample {
+	public static void main(String[] args) {
+		Thread mainThread = Thread.currentThread();
+		System.out.println("프로그램 시작 스레드 이름: " + mainThread.getName());
+		
+		ThreadA threadA = new ThreadA();
+		System.out.println("작업 스레드 이름: " + threadA.getName());
+		threadA.start();
+		
+		ThreadB threadB = new ThreadB();
+		System.out.println("작업 스레드 이름: " + threadB.getName());
+		threadB.start();
+	}
+}
+
+//ThreadA 클래스
+package sec01.exam06;
+
+public class ThreadA extends Thread {	
+	public ThreadA() {
+		setName("ThreadA");
+	}
+	
+	public void run() {		
+		for(int i=0; i<2; i++) {		
+			System.out.println(getName() + "가 출력한 내용");
+		}
+	}
+}
+
+//ThreadB 클래스
+package sec01.exam06;
+
+public class ThreadB extends Thread {	
+	public void run() {		
+		for(int i=0; i<2; i++) {		
+			System.out.println(getName() + "가 출력한 내용");
+		}
+	}
+}
+
+//메인 스레드가 실행하는 코드
+package sec01.exam07;
+
+public class MainThreadExample {
+	public static void main(String[] args) {
+		Calculator calculator = new Calculator();
+		
+		User1 user1 = new User1();
+		user1.setCalculator(calculator);
+		user1.start();
+
+		User2 user2 = new User2();
+		user2.setCalculator(calculator);
+		user2.start();
+	}
+}
+
+//공유 객체
+package sec01.exam07;
+
+public class Calculator {
+	private int memory;
+
+	public int getMemory() {
+		return memory;
+	}
+
+	public void setMemory(int memory) {
+		this.memory = memory;
+		try {
+			Thread.sleep(2000);
+		} catch(InterruptedException e) {}	
+		System.out.println(Thread.currentThread().getName() + ": " +  this.memory);
+	}
+}
+
+//User1 스레드
+package sec01.exam07;
+
+public class User1 extends Thread {	
+	private Calculator calculator;
+	
+	public void setCalculator(Calculator calculator) {
+		this.setName("User1");
+		this.calculator = calculator;
+	}
+	
+	public void run() {
+		calculator.setMemory(100);
+	}
+}
+
+//User2 스레드
+package sec01.exam07;
+
+public class User2 extends Thread {	
+	private Calculator calculator;
+	
+	public void setCalculator(Calculator calculator) {
+		this.setName("User2");
+		this.calculator = calculator;
+	}
+	
+	public void run() {
+		calculator.setMemory(50);
+	}
+}
+
+//동기화 메소드로 수정된 공유 객체
+package sec01.exam08;
+
+public class Calculator {
+	private int memory;
+
+	public int getMemory() {
+		return memory;
+	}
+
+	public synchronized void setMemory(int memory) {
+		this.memory = memory;
+		try {
+			Thread.sleep(2000);
+		} catch(InterruptedException e) {}	
+		System.out.println(Thread.currentThread().getName() + ": " +  this.memory);
+	}
+}
