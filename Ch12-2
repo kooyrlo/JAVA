@@ -1,0 +1,145 @@
+//3초 주기로 10번 비프음 발생
+package sec02.exam01;
+
+import java.awt.Toolkit;
+
+public class SleepExample {
+	public static void main(String[] args) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();		
+		for(int i=0; i<10; i++) {
+			toolkit.beep();
+			try {
+				Thread.sleep(3000);
+			} catch(InterruptedException e) {			
+			}		
+		}	
+	}
+}
+
+//1초 후 출력 스레드를 중지
+package sec02.exam02;
+
+public class StopFlagExample {
+	public static void main(String[] args)  {
+		PrintThread printThread = new PrintThread();
+		printThread.start();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		
+		printThread.setStop(true);
+	}
+}
+
+//무한 반복해서 출력하는 스레드
+package sec02.exam02;
+
+public class PrintThread extends Thread {
+	private boolean stop;
+	
+	public void setStop(boolean stop) {
+	  this.stop = stop;
+	}
+	
+	public void run() {	
+		while(!stop) {
+			System.out.println("실행 중");
+		}	
+		System.out.println("자원 정리");
+		System.out.println("실행 종료");
+	}
+}
+
+//1초 후 출력 스레드를 중지
+package sec02.exam03;
+
+public class InterruptExample {
+	public static void main(String[] args)  {
+		Thread thread = new PrintThread();
+		thread.start();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		
+		thread.interrupt();
+	}
+}
+
+//무한 반복해서 출력하는 스레드
+package sec02.exam03;
+
+public class PrintThread extends Thread {
+	public void run() {	
+		try {
+			while(true) {
+				System.out.println("실행 중");
+				Thread.sleep(1);
+			}	
+		} catch(InterruptedException e) {}
+		
+		System.out.println("자원 정리");
+		System.out.println("실행 종료");
+	}
+}
+
+//무한 반복해서 출력하는 스레드
+package sec02.exam04;
+
+public class PrintThread extends Thread {
+	public void run() {	
+		while(true) {
+			System.out.println("실행 중");
+			if(Thread.interrupted()) {
+				break;
+			}
+		}
+		
+		System.out.println("자원 정리");
+		System.out.println("실행 종료");
+	}
+}
+
+//데몬 스레드
+
+//1초 주기로 save() 메소드를 호출하는 데몬 스레드
+package sec02.exam05;
+
+public class AutoSaveThread extends Thread {
+	public void save() {
+		System.out.println("작업 내용을 저장함.");
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				break;
+			}
+			save();
+		}
+	}
+}
+
+//메인 스레드가 실행하는 코드
+package sec02.exam05;
+
+public class DaemonExample {
+	public static void main(String[] args) {
+		AutoSaveThread autoSaveThread = new AutoSaveThread();
+		autoSaveThread.setDaemon(true);
+		autoSaveThread.start();
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+		}
+		
+		System.out.println("메인 스레드 종료");
+	}
+}
